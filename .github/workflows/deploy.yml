@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -26,26 +28,19 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           
-      - name: Prepare deployment
+      - name: Force push built site to main
         run: |
-          # 创建临时分支用于推送构建文件
-          git checkout -b temp-deploy
-          # 删除除 .git 外的所有文件
-          rm -rf *
-          # 复制构建文件到根目录
-          cp -r _site/* . || true
-          # 清理临时目录
-          rm -rf _site src node_modules
+          # 创建一个临时目录存放构建文件
+          mkdir -p ~/temp-deploy
+          cp -r _site/* ~/temp-deploy/
           
-      - name: Commit and push to main
-        run: |
+          # 添加所有文件并提交
+          cd ~/temp-deploy
+          git init
           git add -A
-          git commit -m "Deploy built site $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
-          # 强制推送到main分支（仅保留构建文件）
-          git push origin temp-deploy:main --force
+          git commit -m "Deploy built site $(date +'%Y-%m-%d %H:%M:%S')"
           
-      - name: Cleanup
-        if: always()
-        run: |
-          git checkout main
-          git branch -D temp-deploy || true
+          # 推送到用户的仓库，替换整个main分支
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/juntz-g1thub/juntz-g1thub.github.io.git
+          git branch -M main
+          git push -f origin main
