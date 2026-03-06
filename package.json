@@ -1,0 +1,21 @@
+{
+  "name": "juntz-blog",
+  "version": "1.0.0",
+  "description": "Personal blog powered by Eleventy",
+  "scripts": {
+    "start": "eleventy --serve",
+    "dev": "eleventy --serve",
+    "build": "eleventy",
+    "clean": "rm -rf _site"
+  },
+  "keywords": [
+    "blog",
+    "eleventy",
+    "static-site"
+  ],
+  "author": "Juntz",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}
