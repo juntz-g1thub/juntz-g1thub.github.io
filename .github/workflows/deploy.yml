@@ -21,9 +21,31 @@ jobs:
       - name: Build site
         run: npm run build
         
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          publish_branch: gh-pages
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+      - name: Prepare deployment
+        run: |
+          # 创建临时分支用于推送构建文件
+          git checkout -b temp-deploy
+          # 删除除 .git 外的所有文件
+          rm -rf *
+          # 复制构建文件到根目录
+          cp -r _site/* . || true
+          # 清理临时目录
+          rm -rf _site src node_modules
+          
+      - name: Commit and push to main
+        run: |
+          git add -A
+          git commit -m "Deploy built site $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          # 强制推送到main分支（仅保留构建文件）
+          git push origin temp-deploy:main --force
+          
+      - name: Cleanup
+        if: always()
+        run: |
+          git checkout main
+          git branch -D temp-deploy || true

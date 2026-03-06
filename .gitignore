@@ -3,10 +3,10 @@ node_modules/
 vendor/
 bower_components/
 
-# 构建输出
+# 构建输出（注释掉_site，因为GitHub Pages用户页面需要部署到main分支）
 dist/
 build/
-_site/
+# _site/
 
 # 环境变量
 .env
