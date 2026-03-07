@@ -1,21 +1,21 @@
 {
-  "name": "juntz-blog",
-  "version": "1.0.0",
-  "description": "Personal blog powered by Eleventy",
+  "name": "juntz-zero-build-blog",
+  "version": "2.0.0",
+  "description": "Zero-build blog using pure HTML/CSS/JavaScript",
   "scripts": {
-    "start": "eleventy --serve",
-    "dev": "eleventy --serve",
-    "build": "eleventy",
-    "clean": "rm -rf _site"
+    "start": "echo 'Open index.html directly in browser'",
+    "dev": "echo 'No dev server - open index.html directly'",
+    "test": "echo 'No tests needed for zero-build blog'"
   },
   "keywords": [
     "blog",
-    "eleventy",
-    "static-site"
+    "zero-build",
+    "static-site",
+    "markedjs",
+    "github-pages"
   ],
   "author": "Juntz",
   "license": "MIT",
-  "devDependencies": {
-    "@11ty/eleventy": "^2.0.1"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

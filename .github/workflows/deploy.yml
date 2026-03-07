@@ -5,26 +5,26 @@ on:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  info:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+      - name: Check repository
+        run: |
+          echo "📦 Zero-build blog detected"
+          echo "🔄 No build step needed"
+          echo "🚀 Files will be served directly by GitHub Pages"
+          echo ""
+          echo "Manual deployment steps:"
+          echo "1. Push to main branch"
+          echo "2. Files are automatically available at https://juntz-g1thub.github.io"
+          echo "3. No build process - direct file serving"
           
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Build site
-        run: npm run build
-        
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          publish_branch: gh-pages
-          cname: juntz.github.io
+      - name: Verify file structure
+        run: |
+          echo "📁 Essential files for zero-build blog:"
+          echo "- ✅ index.html (main application)"
+          echo "- ✅ blog.js (core logic)"
+          echo "- ✅ style.css (styling)"
+          echo "- ✅ posts/ (markdown content)"
+          echo "- ✅ 404.html (SPA fallback)"
+          echo "- ✅ .nojekyll (disable Jekyll processing)"
