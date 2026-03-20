@@ -51,7 +51,6 @@ coverage/
 docs/_site/
 
 # 旧版网站文件（已迁移到Eleventy）
-index.html
 about.html
 css/
 js/
