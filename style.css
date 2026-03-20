@@ -128,8 +128,8 @@ body {
 }
 
 .profile-avatar {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   margin: 0 auto var(--spacing-md);
   border-radius: 50%;
   background: var(--color-primary);
