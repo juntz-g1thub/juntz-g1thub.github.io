@@ -1,192 +1,117 @@
-# AGENTS.md - Developer Guidelines for Juntz's Blog
+# AGENTS.md - Developer Guidelines for Juntz's Zero-Build Blog
 
-This document provides coding guidelines for agents working on this Eleventy-based static blog project.
+This document provides coding guidelines for agents working on this zero-build blog project using pure HTML/CSS/JavaScript.
 
 ---
 
-## 1. Build and Development Commands
+## 1. Project Overview
 
-### Available npm Scripts
+A completely static, zero-build blog system. All pages render Markdown directly in the browser using marked.js. No build tools, no Node.js dependencies for development.
+
+---
+
+## 2. Build and Development Commands
+
+### No Build Required
+
+This is a zero-build project. Development workflow:
 
 ```bash
-# Install dependencies
-npm install
+# No npm install needed (no dependencies)
+# No npm run dev needed
 
-# Start development server with hot reload
-npm run dev
-# or: npm start
-
-# Build production static site
-npm run build
-
-# Clean build output directory
-npm run clean
+# Simply:
+# 1. Open index.html directly in browser
+# 2. Edit files
+# 3. Refresh browser to see changes
 ```
 
-### Manual Testing
+### Optional Local Server (for CORS)
 
-- **Preview built site**: Serve `_site/` directory locally
-- **Test links**: Verify all internal links work after build
-- **Validate HTML**: Check for valid HTML5 structure
+If you need to test with a local server (e.g., for CORS with fetch):
 
-### GitHub Actions
+```bash
+# Using Python
+python -m http.server 8000
 
-The project uses GitHub Actions for automatic deployment:
-- Push to `main` branch triggers automatic build and deploy
-- Output is published to `gh-pages` branch
-- Live site: https://juntz-g1thub.github.io
+# Using Node.js (npx)
+npx serve .
+
+# Then open http://localhost:8000
+```
+
+### Deployment
+
+1. Push changes to GitHub repository
+2. Go to Settings → Pages
+3. Select "Deploy from a branch" → `main` branch → `/(root)`
+4. Site will be live at `https://yourusername.github.io`
 
 ---
 
-## 2. Project Structure
+## 3. Project Structure
 
 ```
 blog-juntz/
-├── .eleventy.js              # Eleventy configuration
-├── package.json              # Node dependencies
-├── .github/workflows/        # CI/CD pipelines
-├── src/
-│   ├── index.njk             # Homepage template
-│   ├── _data/                # Global data files
-│   │   └── site.json         # Site metadata
-│   ├── _includes/
-│   │   ├── layouts/          # Page layouts
-│   │   │   ├── base.njk      # Base HTML template
-│   │   │   └── post.njk      # Blog post layout
-│   │   └── components/       # Reusable components
-│   │       ├── header.njk
-│   │       └── footer.njk
-│   ├── posts/                # Blog posts (Markdown)
-│   ├── pages/                # Static pages
-│   └── assets/
-│       ├── css/style.css     # Main stylesheet
-│       └── images/           # Image assets
-└── _site/                    # Build output (generated)
+├── index.html          # Main SPA - all routing handled here
+├── blog.js             # Core JavaScript logic (~200 lines)
+├── style.css           # All styles with CSS variables
+├── posts/              # Markdown articles
+│   ├── hello-world.md
+│   └── how-this-blog-was-built.md
+├── 404.html            # GitHub Pages SPA fallback
+├── .nojekyll           # Disable GitHub Pages Jekyll
+├── package.json        # Project metadata (no deps)
+├── .github/workflows/  # CI/CD (optional)
+└── AGENTS.md           # This file
 ```
 
 ---
 
-## 3. Code Style Guidelines
+## 4. Code Style Guidelines
 
-### 3.1 General Principles
+### 4.1 General Principles
 
-- Keep templates simple and readable
+- Keep it simple - no build step means no complexity
 - Use semantic HTML5 elements
 - Maintain consistent indentation (2 spaces)
 - No trailing whitespace
 - Use lowercase for file names (kebab-case)
 
-### 3.2 Nunjucks Templates (.njk)
+### 4.2 HTML Structure
 
-**File Naming**: Use lowercase with dashes (e.g., `base.njk`, `post-layout.njk`)
+**File Naming**: lowercase with dashes
 
-**Indentation**: 2 spaces for nested structures
-
-**Variables**:
-```njk
-{{ variable_name }}
-{{ object.property }}
-{{ array[0] }}
+**Basic Template**:
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Title</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>...</header>
+  <main id="app">...</main>
+  <footer>...</footer>
+  <script src="blog.js"></script>
+</body>
+</html>
 ```
 
-**Conditionals**:
-```njk
-{% if condition %}
-  ...
-{% elif other_condition %}
-  ...
-{% else %}
-  ...
-{% endif %}
-```
+### 4.3 CSS Styles
 
-**Loops**:
-```njk
-{% for item in items %}
-  {{ item.name }}
-{% endfor %}
-```
-
-**Includes** (use quotes):
-```njk
-{% include "components/header.njk" %}
-{% include "layouts/base.njk" %}
-```
-
-**Filters** (pipe syntax):
-```njk
-{{ content | safe }}
-{{ date | readableDate }}
-{{ date | htmlDateString }}
-```
-
-**Front Matter** (YAML format):
-```yaml
----
-layout: layouts/post.njk
-title: Post Title
-date: 2026-03-06
-tags:
-  - posts
-  - tag-name
-description: Brief description
----
-```
-
-### 3.3 Markdown Content (.md)
-
-**Front Matter**: Required for all content files
-
-```yaml
----
-layout: layouts/post.njk
-title: Your Post Title
-date: 2026-03-06
-tags:
-  - posts
-  - category
-description: SEO description (150-160 chars)
----
-```
-
-**Headings**: Use ATX-style (# ## ###)
-
-```markdown
-## Heading Level 2
-### Heading Level 3
-```
-
-**Lists**: Use - or * for unordered, 1. 2. 3. for ordered
-
-**Code Blocks**: Use triple backticks with language identifier
-
-```markdown
-```javascript
-const greeting = "Hello";
-```
-```
-
-**Links**: Use descriptive link text
-
-```markdown
-[Eleventy Documentation](https://www.11ty.dev)
-```
-
-**Images**: Include alt text
-
-```markdown
-![Alt text](/assets/images/image-name.png)
-```
-
-### 3.4 CSS (.css)
-
-**File Naming**: Use lowercase with dashes (e.g., `style.css`, `components.css`)
+**File Naming**: Use lowercase with dashes (e.g., `style.css`)
 
 **Variables** (CSS Custom Properties):
 ```css
 :root {
   --color-primary: #3498db;
   --color-secondary: #2ecc71;
+  --color-bg: #ffffff;
+  --color-text: #333333;
   --spacing-md: 1rem;
   --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -196,160 +121,201 @@ const greeting = "Hello";
 ```css
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-text: #e0e0e0;
     --color-bg: #1a1a1a;
+    --color-text: #e0e0e0;
   }
 }
-```
-
-**BEM-style classes** (recommended):
-```css
-.block {}
-.block__element {}
-.block--modifier {}
 ```
 
 **Organization**:
 1. CSS Custom Properties (variables)
-2. Reset/normalize
-3. Base styles (typography)
+2. Reset/base styles
+3. Typography
 4. Layout components
 5. Page-specific styles
 6. Utilities
 
-### 3.5 JavaScript (.js) Configuration
+### 4.4 JavaScript
 
-**File**: `.eleventy.js` (CommonJS module)
+**File**: `blog.js`
+
+**Core Pattern** - Single global object:
+```javascript
+const BlogApp = {
+  // State
+  articles: [],
+
+  // Initialize
+  async init() {
+    await this.loadArticles();
+    this.bindEvents();
+    this.handleHashChange();
+  },
+
+  // Event binding
+  bindEvents() {
+    window.addEventListener('hashchange', () => this.handleHashChange());
+  },
+
+  // Routing
+  handleHashChange() {
+    const hash = window.location.hash || '#';
+    // Route handling logic
+  },
+
+  // Load markdown files
+  async loadArticles() {
+    // Fetch and parse posts
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => BlogApp.init());
+```
 
 **Naming**:
-- Variables: camelCase (`eleventyConfig`, `dateObj`)
-- Functions: camelCase (`readableDate`, `htmlDateString`)
+- Variables: camelCase (`currentRoute`, `articles`)
+- Functions: camelCase (`loadArticles`, `renderPost`)
 - Constants: UPPER_SNAKE_CASE if needed
 
-**Module Export**:
+---
+
+## 5. Routing System
+
+### Hash-Based Routing
+
+| Hash | Page |
+|------|------|
+| `#` or `#/` | Home |
+| `#about` | About page |
+| `#posts` | All posts list |
+| `#post=slug` | Single post |
+
+### Route Handling Pattern
+
 ```javascript
-module.exports = function(eleventyConfig) {
-  // Configuration code
-  return { /* options object */ };
-};
-```
+handleHashChange() {
+  const hash = window.location.hash;
 
-**Filters**:
-```javascript
-eleventyConfig.addFilter("filterName", (input) => {
-  if (!input) return "";
-  // Processing logic
-  return output;
-});
-```
-
-**Collections**:
-```javascript
-eleventyConfig.addCollection("collectionName", function(collectionApi) {
-  return collectionApi.getFilteredByGlob("src/**/*.md");
-});
-```
-
-### 3.6 JSON Data Files (.json)
-
-**Naming**: Use lowercase with underscores (e.g., `site.json`, `helpers.json`)
-
-**Structure**:
-```json
-{
-  "key": "value",
-  "nested": {
-    "key": "value"
+  if (hash === '#' || hash === '') {
+    this.renderHome();
+  } else if (hash === '#about') {
+    this.renderAbout();
+  } else if (hash === '#posts') {
+    this.renderPostsList();
+  } else if (hash.startsWith('#post=')) {
+    const slug = hash.replace('#post=', '');
+    this.renderPost(slug);
+  } else {
+    this.render404();
   }
 }
 ```
 
 ---
 
-## 4. Error Handling
+## 6. Markdown Posts
 
-### Template Errors
-- Check for missing front matter in Markdown files
-- Verify file paths in includes are correct
-- Ensure filter names are spelled correctly
+### File Naming
 
-### Build Errors
-- Run `npm run build` to see detailed error messages
-- Check for syntax errors in Nunjucks templates
-- Verify all referenced files exist
+Use lowercase with dashes: `my-post-title.md`
 
-### Common Issues
-- **404 on assets**: Check `addPassthroughCopy` in `.eleventy.js`
-- **Missing posts**: Verify posts are in `src/posts/*.md`
-- **Wrong dates**: Use ISO format `YYYY-MM-DD` in front matter
+### Front Matter Pattern
 
----
+```markdown
+# Post Title
 
-## 5. Adding New Content
+发表时间：2026-03-07  
+标签：技术, 教程
 
-### New Blog Post
-1. Create file: `src/posts/post-title.md`
-2. Add required front matter
-3. Write content in Markdown
-4. Run `npm run build` to test
+正文内容...
+```
 
-### New Static Page
-1. Create file: `src/pages/pagename.njk` or `.md`
-2. Add front matter with `layout` and `title`
-3. Link from navigation if needed
+Note: Current implementation parses date/tags from body text. Future versions may use YAML front matter.
 
-### New Component
-1. Create file: `src/_includes/components/name.njk`
-2. Include in templates: `{% include "components/name.njk" %}`
+### Loading Posts
 
----
-
-## 6. Testing Checklist
-
-Before pushing changes:
-
-- [ ] Run `npm run build` successfully
-- [ ] Verify all pages render correctly in `_site/`
-- [ ] Check that CSS is properly linked
-- [ ] Ensure all internal links work
-- [ ] Test responsive design at different widths
-- [ ] Verify dark mode works (if applicable)
-
----
-
-## 7. Deployment
-
-### Automatic Deployment (GitHub Actions)
-1. Push changes to `main` branch
-2. GitHub Actions builds automatically
-3. Check Actions tab for build status
-4. Site deploys to `gh-pages` branch
-
-### Manual Deployment
-```bash
-npm run build
-# Manually upload _site/ contents to gh-pages
+```javascript
+async loadPost(slug) {
+  const response = await fetch(`posts/${slug}.md`);
+  const markdown = await response.text();
+  const html = marked.parse(markdown);
+  return { html, slug };
+}
 ```
 
 ---
 
-## 8. Best Practices
+## 7. Adding New Content
 
-1. **Version Control**: Commit frequently with descriptive messages
-2. **Testing**: Always build locally before pushing
-3. **Performance**: Optimize images before adding to `src/assets/images/`
-4. **SEO**: Always include description in front matter
-5. **Accessibility**: Use semantic HTML and proper alt text
-6. **Responsiveness**: Test on mobile, tablet, and desktop
+### New Blog Post
+
+1. Create file: `posts/my-post-title.md`
+2. Add title at top with `# Title`
+3. Add date line: `发表时间：YYYY-MM-DD`
+4. Add tags line: `标签：tag1, tag2`
+5. Write content in Markdown
+6. Open in browser and test
+
+### Modifying Styles
+
+Edit `style.css` - all styles use CSS variables for easy theming.
+
+### Adding Features
+
+Edit `blog.js` - all logic in `BlogApp` object.
 
 ---
 
-## 9. Useful Resources
+## 8. Error Handling
 
-- [Eleventy Documentation](https://www.11ty.dev/docs/)
-- [Nunjucks Templating](https://mozilla.github.io/nunjucks/)
-- [GitHub Actions](https://docs.github.com/en/actions)
-- [Markdown Guide](https://www.markdownguide.org/)
+### Common Issues
+
+- **404 on posts**: Check file is in `posts/` directory and slug matches filename
+- **Markdown not rendering**: Ensure marked.js CDN is loaded
+- **Styles not applied**: Check CSS file path in HTML
+- **Hash routing broken**: Check `window.location.hash` usage
+
+### Debugging
+
+- Open browser DevTools (F12)
+- Check Console for errors
+- Use `console.log()` to debug JavaScript
+- Network tab to verify file loads
+
+---
+
+## 9. Best Practices
+
+1. **Version Control**: Commit frequently with descriptive messages
+2. **Test Locally**: Always test in browser before deploying
+3. **SEO**: Use semantic HTML, include descriptive content
+4. **Accessibility**: Use proper alt text, semantic elements
+5. **Performance**: Keep JS/CSS minimal
+6. **Responsiveness**: Test on mobile and desktop
+
+---
+
+## 10. File Reference
+
+### index.html (~8KB)
+- Main SPA shell
+- Contains header, main content area, footer
+- Loads blog.js and style.css
+
+### blog.js (~13KB)
+- `BlogApp` object with all logic
+- Hash routing
+- Markdown loading via fetch
+- marked.js integration
+
+### style.css (~3KB)
+- CSS variables for theming
+- Dark mode support
+- Responsive layout
+
+### posts/*.md
+- Markdown content files
+- Parsed client-side
 
 ---
 
