@@ -57,3 +57,6 @@ js/
 images/
 templates/
 old-website/
+
+# Git worktrees
+.worktrees/
