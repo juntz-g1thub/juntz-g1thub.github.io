@@ -5,30 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Juntz - 技术博客</title>
   <meta name="description" content="Juntz的个人技术博客，分享编程心得与技术思考">
-  
+
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-  
+
   <!-- marked.js Markdown渲染库 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  
+
   <!-- 核心博客逻辑 -->
   <script src="blog.js" defer></script>
-  
+
   <!-- 图标字体 (可选) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <a href="/" class="site-logo" data-nav="home">
-        <span class="logo-letter">J</span><span class="logo-text">untz</span>
-      </a>
-      <nav class="site-nav">
-        <a href="#home" class="nav-link" data-nav="home">首页</a>
-        <a href="#about" class="nav-link" data-nav="about">关于</a>
-        <a href="#posts" class="nav-link" data-nav="posts">全部文章</a>
-      </nav>
+    <div class="container header-container">
+      <div class="header-left">
+        <a href="/" class="site-logo" data-nav="home">
+          <span class="logo-letter">J</span><span class="logo-text">untz</span>
+        </a>
+        <nav class="site-nav">
+          <a href="#home" class="nav-link" data-nav="home" data-i18n-nav="home">首页</a>
+          <a href="#about" class="nav-link" data-nav="about" data-i18n-nav="about">关于</a>
+          <a href="#posts" class="nav-link" data-nav="posts" data-i18n-nav="posts">全部文章</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <div id="lang-switcher" class="lang-switcher">
+          <button class="lang-btn lang-zh active" data-lang="zh">中</button>
+          <span class="lang-divider">/</span>
+          <button class="lang-btn lang-en" data-lang="en">EN</button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -42,19 +51,19 @@
             <img src="avatar.png" alt="Juntz的头像" class="avatar-img">
           </div>
           <h2 class="profile-name">Juntz</h2>
-          <p class="profile-bio">热爱技术与编程，分享开发心得</p>
+          <p class="profile-bio" data-i18n="profile.bio">热爱技术与编程，分享开发心得</p>
         </div>
-        
+
         <div class="sidebar-links">
           <a href="https://github.com/juntz-g1thub" target="_blank" rel="noopener" class="social-link">
             <i class="fab fa-github"></i>
             GitHub
           </a>
         </div>
-        
+
         <!-- 文章列表会在JS中动态生成 -->
         <div class="sidebar-articles">
-          <h3 class="sidebar-title">最新文章</h3>
+          <h3 class="sidebar-title" data-i18n="sidebar.latest">最新文章</h3>
           <div id="article-list" class="article-list">
             <!-- 动态加载 -->
           </div>
@@ -65,24 +74,24 @@
       <div class="content-area">
         <!-- 加载状态 -->
         <div id="loading" class="loading">
-          <p>正在加载...</p>
+          <p>Loading...</p>
         </div>
 
         <!-- 主页内容 -->
         <div id="home-content" class="page-content hidden">
-          <h1>欢迎访问我的博客</h1>
-          <p>这里是我的技术思考空间，记录编程学习和项目经验。</p>
-          <p><strong>特点</strong>：</p>
-          <ul>
-            <li>📝 简单直接的Markdown写作</li>
-            <li>🎨 自定义HTML/CSS界面</li>
-            <li>🚀 零构建，直接部署</li>
-            <li>🌙 自动暗色模式支持</li>
+          <h1 class="home-title">欢迎访问我的博客</h1>
+          <p class="home-subtitle">这里是我的技术思考空间，记录编程学习和项目经验。</p>
+          <p><strong data-i18n="home.features">特点</strong>：</p>
+          <ul class="feature-list">
+            <li>📝 <span data-i18n="home.feature_list.0">简单直接的Markdown写作</span></li>
+            <li>🎨 <span data-i18n="home.feature_list.1">自定义HTML/CSS界面</span></li>
+            <li>🚀 <span data-i18n="home.feature_list.2">零构建，直接部署</span></li>
+            <li>🌙 <span data-i18n="home.feature_list.3">自动暗色模式支持</span></li>
           </ul>
-          
+
           <!-- 最近文章 -->
           <section class="recent-posts">
-            <h2>📚 最近文章</h2>
+            <h2>📚 <span data-i18n="home.recent">最近文章</span></h2>
             <div id="recent-articles" class="post-list">
               <!-- 动态生成最近文章 -->
             </div>
@@ -91,26 +100,13 @@
 
         <!-- 关于页面 -->
         <div id="about-content" class="page-content hidden">
-          <h1>关于我</h1>
-          <p>你好，我是Juntz！</p>
-          <p>一个热爱技术的开发者，享受用代码创造价值的过程。</p>
-          
-          <h2>关于这个博客</h2>
-          <p>这个博客使用了零构建技术：</p>
-          <ul>
-            <li>💡 纯HTML + CSS + JavaScript</li>
-            <li>📄 直接在浏览器中渲染Markdown</li>
-            <li>⚡ 无需任何构建工具，直接部署</li>
-            <li>🌐 托管在GitHub Pages</li>
-          </ul>
+          <!-- 内容由JS动态渲染 -->
         </div>
 
         <!-- 文章列表 -->
         <div id="posts-content" class="page-content hidden">
-          <h1>全部文章</h1>
-          <div id="all-articles" class="post-list">
-            <!-- 动态生成 -->
-          </div>
+          <div id="posts-header"></div>
+          <div id="all-articles" class="post-list"></div>
         </div>
 
         <!-- 文章内容显示区 -->
@@ -124,7 +120,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>&copy; 2026 Juntz. 保留所有权利。</p>
+      <p>&copy; 2026 Juntz. <span data-i18n="footer.copyright">保留所有权利</span></p>
       <div class="social-links">
         <a href="https://github.com/juntz-g1thub" target="_blank" rel="noopener">GitHub</a>
       </div>
@@ -171,5 +167,26 @@
       margin-bottom: var(--spacing-sm);
     }
   </style>
+
+  <!-- Language Switcher Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const switcher = document.getElementById('lang-switcher');
+      if (switcher) {
+        switcher.addEventListener('click', (e) => {
+          const btn = e.target.closest('.lang-btn');
+          if (btn) {
+            const lang = btn.getAttribute('data-lang');
+            console.log('Lang switch clicked:', lang, 'BlogApp exists:', typeof BlogApp);
+            if (BlogApp && BlogApp.setLang) {
+              BlogApp.setLang(lang);
+            } else {
+              console.error('BlogApp.setLang not available!');
+            }
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

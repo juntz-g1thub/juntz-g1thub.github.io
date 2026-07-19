@@ -98,6 +98,63 @@ body {
   color: var(--color-primary);
 }
 
+/* Header Layout */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Language Switcher */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 4px;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-light);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.lang-btn.active {
+  color: white;
+  background: var(--color-primary);
+}
+
+.lang-divider {
+  color: var(--color-border);
+  font-size: 0.875rem;
+}
+
 .main-content {
   min-height: calc(100vh - 200px);
   padding-bottom: var(--spacing-xl);
@@ -397,6 +454,53 @@ body {
   border-top: 1px solid var(--color-border);
 }
 
+.post-article {
+  max-width: 800px;
+}
+
+.post-article h1 {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.post-body {
+  margin-top: var(--spacing-lg);
+}
+
+.post-body h2 {
+  font-size: 1.5rem;
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+}
+
+.post-body h3 {
+  font-size: 1.25rem;
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.post-body p {
+  margin-bottom: var(--spacing-md);
+}
+
+.post-body ul, .post-body ol {
+  margin-bottom: var(--spacing-md);
+  padding-left: var(--spacing-lg);
+}
+
+.post-body li {
+  margin-bottom: var(--spacing-sm);
+}
+
+.nav-back {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.nav-back:hover {
+  text-decoration: underline;
+}
+
 .site-footer {
   padding: var(--spacing-lg) 0;
   border-top: 1px solid var(--color-border);
@@ -422,12 +526,23 @@ body {
   .main-layout {
     grid-template-columns: 1fr;
   }
-  
+
   .sidebar {
     position: static;
     order: -1;
   }
-  
+
+  .header-container {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+
+  .header-left {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
   .site-header .container {
     flex-direction: column;
     gap: var(--spacing-md);
