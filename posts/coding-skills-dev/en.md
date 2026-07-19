@@ -1,7 +1,7 @@
 # Coding Skills Development Report
 
-发表时间：2026-07-19
-标签：技术, 工具, MCP
+Published: 2026-07-19
+Tags: Tech, Tools, MCP
 
 ## Background
 
