@@ -296,7 +296,8 @@ const BlogApp = {
     try {
       const articles = [
         { slug: 'hello-world' },
-        { slug: 'how-this-blog-was-built' }
+        { slug: 'how-this-blog-was-built' },
+        { slug: 'coding-skills-dev' }
       ];
 
       // 并行获取所有文章的信息（当前语言版本）
